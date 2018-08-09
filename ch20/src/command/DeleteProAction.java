@@ -11,30 +11,20 @@ public class DeleteProAction implements CommandAction {
 	public String requestPro(HttpServletRequest request, HttpServletResponse response) throws Throwable {
 		 request.setCharacterEncoding("utf-8");
 		 
-		  String name=request.getParameter("name");
-		  String title=request.getParameter("title");
-		  String content=request.getParameter("content");
-		  String password = request.getParameter("password");
-		  
-		  BoardDTO board = new BoardDTO();
-		  
-		  board.setName(name);
-		  board.setTitle(title);
-		  board.setContent(content);
-		  board.setPassword(password);
-		
+		  String no=request.getParameter("no");
+
 		  BoardDao dao = BoardDao.getInstance();
-		  int result = dao.insertBoard(board);
+		  int result = dao.deleteBoard(Integer.parseInt(no));
 		  
 		  String view="";
 		  String msg = "";
 		  
 		  if(result>0) {
-			 msg = "등록 성공";
+			 msg = "삭제 성공";
 			 view = "List.do";
 		  }else {
-			  msg ="등록 실패";
-			  view ="writeForm.jsp";
+			  msg ="삭제 실패";
+			  view ="deleteForm.do?no="+no;
 		  }
 		  
 		  request.setAttribute("msg", msg);

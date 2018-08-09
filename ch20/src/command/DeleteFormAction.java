@@ -8,6 +8,11 @@ public class DeleteFormAction implements CommandAction {
 	public String requestPro(HttpServletRequest request, 
 			      HttpServletResponse response) throws Throwable {
 		
-		return "writeForm.jsp";
+	  String no = request.getParameter("no");
+	  if(!(no==null || "".equals(no)))
+	  //뷰에 보낼 객체를 request에 속성으로 저장
+	   request.setAttribute("no", no);
+		 
+		return "deleteForm.jsp";
 	}
 }

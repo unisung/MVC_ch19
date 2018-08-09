@@ -57,7 +57,8 @@ public class BoardDao extends DaoManager implements BoardService {
 	}//getBoardList() 메소드 끝.
 
 	@Override
-	public List<BoardDTO> getBoardList(String search) {
+	public List<BoardDTO> getBoardList(String gubun, String search) {
+		
 
 		return null;
 	}
@@ -79,10 +80,22 @@ public class BoardDao extends DaoManager implements BoardService {
 	}//updateBoard()메소드 끝.
 
 	@Override
-	public int deleteBoard(int no) {
-
-		return 0;
-	}
+	public int deleteBoard(int no) throws Exception {
+		int count=0;
+		String sql = "delete from board where no=?";
+		conn=getConnection();
+		conn.setAutoCommit(false);
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, no);
+		count = pstmt.executeUpdate();
+		if(count>0)
+			conn.commit();
+		else
+			conn.rollback();
+		conn.setAutoCommit(true);
+		close(pstmt, conn);
+		return count;
+	}//deleteBoard()메소드 끝.
 
 	@Override
 	public BoardDTO getContent(int no) throws Exception {

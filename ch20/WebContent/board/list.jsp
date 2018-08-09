@@ -6,9 +6,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script>
+function chk(){
+ var form = document.getElementById('frm');
+ frm.action='List.do';
+ frm.submit();
+}
+</script>
 </head>
 <body>
 ${msg}<br>
+<form action="" name="frm" id="frm">
+<select name="searchOption">
+<option value="sel" disabled="disabled">선택</option>
+<option value="title">title</option>
+<option value="content">content</option>
+</select>
+<input type="text" name="searchCont">
+<input type="button" value="검색" onclick="chk()">
+</form>
+<br>
 <a href="writeForm.do">글쓰기</a><br>
 <c:if test="${empty list}">
 <h3>게시판 내용이 없습니다.</h3>
@@ -20,7 +37,7 @@ ${msg}<br>
 </tr>
 <c:forEach var="b" items="${list}" >
 <tr>
-<td>${b.no}</td>
+<td><a href="Content.do?no=${b.no}">${b.no}</a></td>
 <td>${b.name}</td>
 <td><a href="Content.do?no=${b.no}">${b.title}</a></td>
 </tr>

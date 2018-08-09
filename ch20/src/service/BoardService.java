@@ -9,7 +9,7 @@ public interface BoardService {
 	//리스트
 	List<BoardDTO> getBoardList() throws Exception;
    //리스트
-	List<BoardDTO> getBoardList(String search) throws Exception;
+	List<BoardDTO> getBoardList(String gubun, String search) throws Exception;
 	//수정
 	int updateBoard(BoardDTO board) throws Exception;
 	//삭제
