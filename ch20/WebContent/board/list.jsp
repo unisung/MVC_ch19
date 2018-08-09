@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 <script>
 function chk(){
- var form = document.getElementById('frm');
+ var frm = document.getElementById('frm');
  frm.action='List.do';
  frm.submit();
 }

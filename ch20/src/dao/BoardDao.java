@@ -57,10 +57,36 @@ public class BoardDao extends DaoManager implements BoardService {
 	}//getBoardList() 메소드 끝.
 
 	@Override
-	public List<BoardDTO> getBoardList(String gubun, String search) {
+	public List<BoardDTO> getBoardList(String gubun, String search) throws Exception {
+		List<BoardDTO> list = new ArrayList<>();
+		String sql = "select * from board where ";
 		
-
-		return null;
+		search = "%"+search+"%";
+		
+		System.out.println("search="+search);
+		
+		if(gubun.equals("title"))
+			 sql += " title like ? ";
+		else if(gubun.equals("content"))
+			 sql+= "content like ? ";
+		
+		System.out.println(sql);
+		conn= getConnection();
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, search);
+		rs = pstmt.executeQuery();
+		
+		while(rs.next()) {
+			BoardDTO board = new BoardDTO();
+			board.setNo(rs.getInt(1));
+			board.setName(rs.getString(2));
+			board.setTitle(rs.getString(3));
+			board.setContent(rs.getString(4));
+			
+			list.add(board);
+		}
+		close(pstmt, rs, conn); 
+		return list;
 	}
 
 	@Override
