@@ -69,11 +69,18 @@ public class BoardDao extends DaoManager implements BoardService {
 			 sql += " title like ? ";
 		else if(gubun.equals("content"))
 			 sql+= "content like ? ";
+		else
+			sql+=" title like ? or content like ?";
 		
 		System.out.println(sql);
 		conn= getConnection();
 		pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, search);
+		if(gubun.equals("title")|| gubun.equals("content"))
+		  pstmt.setString(1, search);
+		else {
+			pstmt.setString(1, search);
+			pstmt.setString(2, search);
+		}	
 		rs = pstmt.executeQuery();
 		
 		while(rs.next()) {
@@ -160,6 +167,50 @@ public class BoardDao extends DaoManager implements BoardService {
 		 close(pstmt, rs, conn); 
 		return isTrue;
 	}//getBoardPass() 메소드 끝.
+
+	@Override
+	public int selectCount() throws Exception{
+		int count=0;
+		String sql = "select count(*) from board";
+		conn = getConnection();
+		pstmt = conn.prepareStatement(sql);
+		rs = pstmt.executeQuery();
+		while(rs.next()) {
+			count = rs.getInt(1);
+		}
+		 close(pstmt,rs,conn);
+		return count;
+	}//selectCount() 메소드 끝.
+
+	@Override
+	public List<BoardDTO> select(int pageSize, int size) throws Exception{
+	  List<BoardDTO> list = new ArrayList<>();
+	  String sql =" select no,name,title,content,password from " + 
+	  		      " (select rownum rn,a.* " + 
+	  		      "  from " + 
+	  		      " (select * from board order by no)a) " + 
+	  		      " where rn between  ? and ?";
+	  conn = getConnection();
+	  pstmt=conn.prepareStatement(sql);
+	  pstmt.setInt(1, pageSize);
+	  pstmt.setInt(2,pageSize+size-1);
+	  System.out.println("pageSzie="+pageSize);
+	  System.out.println("pageSzie+size-1="+(pageSize+size-1));
+	  
+	  rs = pstmt.executeQuery();
+	  while(rs.next()) {
+		  BoardDTO board = new BoardDTO();
+		  board.setNo(rs.getInt(1));
+		  board.setName(rs.getString(2));
+		  board.setTitle(rs.getString(3));
+		  board.setContent(rs.getString(4));
+		  board.setPassword(rs.getString(5));
+		  
+		  list.add(board);
+	  }
+	    close(pstmt, rs, conn);
+		return list;
+	}
 
 	
 }

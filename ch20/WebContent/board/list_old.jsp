@@ -27,15 +27,15 @@ ${msg}<br>
 </form>
 <br>
 <a href="writeForm.do">글쓰기</a><br>
-<c:if test="${list.total==0}">
+<c:if test="${empty list}">
 <h3>게시판 내용이 없습니다.</h3>
 </c:if>
-<c:if test="${list.total>0}">
+<c:if test="${!empty list}">
 <table>
 <tr>
 <th><b>번호</b></th><th><b>작성자</b></th><th><b>제목</b></th>
 </tr>
-<c:forEach var="b" items="${list.board}" >
+<c:forEach var="b" items="${list}" >
 <tr>
 <td><a href="Content.do?no=${b.no}">${b.no}</a></td>
 <td>${b.name}</td>
@@ -43,15 +43,6 @@ ${msg}<br>
 </tr>
 </c:forEach>
 </table>
-  <c:if test="${list.startPage > 5}">
-  <a href="List.do?pageNum=${list.startPage-5}">[이전]</a>
-</c:if>
-<c:forEach var="pNo" begin="${list.startPage}" end="${list.endPage}">
- <a href="List.do?pageNum=${pNo}">[${pNo}]</a>
-</c:forEach>
- <c:if test="${list.endPage < list.totalPages}">
- 	<a href="List.do?pageNum=${list.startPage+5}">[다음]</a>
- </c:if>
 </c:if>
 </body>
 </html>

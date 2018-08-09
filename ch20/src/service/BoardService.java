@@ -18,5 +18,10 @@ public interface BoardService {
 	BoardDTO getContent(int no) throws Exception;
 	//해당글의 비번 확인
 	boolean getBoardPass(int no, String password) throws Exception;
+	//건수 확인
+	int selectCount() throws Exception;
+	//리스트 구하기
+	List<BoardDTO> select(int pageSize,int size)  throws Exception; 
+	
 
 }
