@@ -3,13 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 폼</title>
+<script type="text/javascript" src="js/createXMLHttpRequest.js"></script>
+<script>
+function chk(){
+	var id =document.forms[0].id.value;
+	var pass =document.forms[0].pass.value;
+	var params = "id="+id+"&pass="+pass;
+	sendRequest("check.jsp",params,callback,"get");
+	return false;//default동작 막기
+}
+function callback(){
+	if(httpRequest.readyState==4){//응답완료
+		if(httpRequest.status==200){//정상 OK
+			var text1 = httpRequest.responseText;
+		     alert("결과:"+httpRequest.responseText);
+		        var start = text1.indexOf('<body>');
+			    var end = text1.indexOf('</body>');
+			    var text2 = text1.substring((start+6),end);//
+			        log(text2);
+		}
+	}
+}
+</script>
 </head>
 <body>
 <h2>로그인</h2>
-<form action="check.jsp">
+<form action=""  onsubmit="return chk()">
 아이디:<input type="text" name="id" required><p>
 비밀번호:<input type="password" name="pass" required><p>
 <input type="submit" value="확인">
 </form>
+<div><span id="console"></span></div>
 </body>
 </html>
